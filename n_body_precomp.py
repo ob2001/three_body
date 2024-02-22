@@ -4,23 +4,22 @@ import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
 
 G = 8.9953e-6 # Adjusted for normalized units
-n_bodies = 3
 steps = 4000
 dt = 0.25
 scale = 0.5
-
-bodies = np.zeros([steps, n_bodies, 5])
 
 # Masses are measured in Earth masses
 # Distances are measured in AU
 # Time is measured in 86400s
 # Near approximation to Earth-Sun system
 # The data for each body is in the order [m, x, y, v_x, v_y]
-bodies[0] = np.array([
+bodies = np.array([
                 np.array([100., 0., 0., 0., 0.]),
                 np.array([1., 0., 1., 0.027, 0.]),
                 np.array([1., 0., -0.5, -0.027, 0.])
             ])
+
+bodies = np.concatenate(([bodies], np.zeros([steps - 1, *np.shape(bodies)])))
 
 def mot_eq(b, t, i):
     m, p, v = b[0], b[1:3], b[3::]
